@@ -1,5 +1,7 @@
 import { makeCartridge } from "../entities/healthCartridge.js";
 import { makePlayer } from "../entities/player.js";
+import { makeTurret } from "../entities/enemyTurret.js";
+import { makeCollectible } from "../entities/collectible.js";
 import { healthBar } from "../ui/healthBar.js";
 import {
   setBackgroundColor,
@@ -55,6 +57,18 @@ export function room2(k, roomData, previousSceneData) {
     if (position.type === "cartridge") {
       map.add(makeCartridge(k, k.vec2(position.x, position.y)));
     }
+
+    if (position.type === "turret") {
+      const turret = map.add(makeTurret(k, k.vec2(position.x, position.y)));
+      turret.setBehavior();
+      turret.setEvents();
+    }
+
+    if (position.type === "collectible") {
+      const collectible = map.add(makeCollectible(k, k.vec2(position.x, position.y)));
+      collectible.setBehavior();
+      collectible.setEvents();
+    }
   }
 
   const cameras = roomLayers[6].objects;
@@ -62,7 +76,11 @@ export function room2(k, roomData, previousSceneData) {
   setCameraZones(k, map, cameras);
 
   const exits = roomLayers[7].objects;
-  setExitZones(k, map, exits, "room1");
+  setExitZones(k, map, exits, {
+    "exit-1": "room1",
+    "exit-2": "room1",
+    "exit-3": "room3",
+  });
 
   healthBar.setEvents();
   healthBar.trigger("update");

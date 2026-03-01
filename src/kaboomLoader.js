@@ -84,6 +84,10 @@ k.loadSound("notify", "./assets/sounds/notify.mp3");
 k.loadSound("boom", "./assets/sounds/boom.wav");
 k.loadSound("health", "./assets/sounds/health.wav");
 k.loadSound("flamethrower", "./assets/sounds/flamethrower.mp3");
+k.loadSound("jump", "./assets/sounds/jump.wav");
+k.loadSound("shoot", "./assets/sounds/shoot.wav");
+k.loadSound("goliyan", "./assets/sounds/goliyan.mp3");
 
 k.loadSprite("room1", "./maps/room1.png");
 k.loadSprite("room2", "./maps/room2.png");
+k.loadSprite("room3", "./maps/room3.png");

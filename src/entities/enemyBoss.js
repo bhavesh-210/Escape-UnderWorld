@@ -91,6 +91,12 @@ export function makeBoss(k, initialPos) {
           this.hurt(1);
         });
 
+        this.onCollide("bullet", (b) => {
+          k.destroy(b);
+          k.play("boom");
+          this.hurt(1);
+        });
+
         this.onAnimEnd((anim) => {
           switch (anim) {
             case "open-fire":

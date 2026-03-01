@@ -1,10 +1,163 @@
-<html>
-  <body>
-    <style>
-      body {
-        background: black;
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escape Underworld</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #0a0a1a;
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    #intro-ui {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, rgba(32, 33, 74, 0.95) 0%, rgba(10, 10, 26, 0.95) 100%);
+      z-index: 100;
+      transition: opacity 0.8s ease-in-out, visibility 0.8s;
+    }
+
+    .intro-content {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 4rem;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.05);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
       }
-    </style>
-    <script type="module" src="./src/main.js"></script>
-  </body>
+
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
+    h1 {
+      font-size: 4rem;
+      margin: 0 0 1rem 0;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      text-shadow: 0 0 20px rgba(100, 200, 255, 0.6), 0 0 40px rgba(100, 200, 255, 0.2);
+      font-weight: 900;
+    }
+
+    p.instructions {
+      color: #b0c4de;
+      font-size: 1.2rem;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    .controls {
+      display: inline-block;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 12px 24px;
+      border-radius: 12px;
+      margin-top: 15px;
+      font-size: 1rem;
+      color: #7ab4f8;
+      border: 1px solid rgba(122, 180, 248, 0.2);
+    }
+
+    .play-btn {
+      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+      color: white;
+      border: none;
+      padding: 16px 56px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow: 0 10px 20px rgba(79, 172, 254, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .play-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: rotate(45deg);
+      transition: 0.5s;
+      opacity: 0;
+    }
+
+    .play-btn:hover {
+      transform: scale(1.05) translateY(-3px);
+      box-shadow: 0 15px 30px rgba(79, 172, 254, 0.6);
+    }
+
+    .play-btn:hover::after {
+      opacity: 1;
+      left: 100%;
+    }
+
+    .play-btn:active {
+      transform: scale(0.95);
+    }
+
+    .hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="intro-ui">
+    <div class="intro-content">
+      <h1>Escape Underworld</h1>
+      <p class="story"
+        style="color: #fff; font-size: 1.2rem; font-style: italic; margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+        You were just a normal robot worker when a sudden floor collapse sent you plunging deep into the factory's
+        basement. Now trapped with hostile security systems, you must battle your way up through the different levels to
+        escape to the surface!
+      </p>
+      <p class="instructions">
+        Navigate the dangerous facility and find your way out.<br>
+      <div class="controls">Arrow Keys: Move/Wall Slide &nbsp;|&nbsp; X: Jump/Wall Jump &nbsp;|&nbsp; Z: Melee
+        &nbsp;|&nbsp; C: Shoot</div>
+      </p>
+      <button id="play-btn" class="play-btn" disabled style="opacity: 0.6; cursor: not-allowed;">Loading...</button>
+    </div>
+  </div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+
 </html>

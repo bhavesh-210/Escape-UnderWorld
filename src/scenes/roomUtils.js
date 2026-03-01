@@ -1,4 +1,6 @@
 import { state, statePropsEnum } from "../state/globalStateManager.js";
+import { levelIndicator } from "../ui/levelIndicator.js";
+import { itemCounter } from "../ui/itemCounter.js";
 
 export function setBackgroundColor(k, hexColorCode) {
   k.add([
@@ -6,6 +8,9 @@ export function setBackgroundColor(k, hexColorCode) {
     k.color(k.Color.fromHex(hexColorCode)),
     k.fixed(),
   ]);
+
+  k.add(levelIndicator.create(k));
+  k.add(itemCounter.create(k));
 }
 
 export function setMapColliders(k, map, colliders) {
@@ -25,6 +30,7 @@ export function setMapColliders(k, map, colliders) {
         k.body({ isStatic: true }),
         "collider",
         collider.type,
+        collider.name === "slope" ? "slope" : "",
       ]);
       continue;
     }
@@ -170,7 +176,7 @@ export function setCameraZones(k, map, cameras) {
   }
 }
 
-export function setExitZones(k, map, exits, destinationName) {
+export function setExitZones(k, map, exits, destinationMap) {
   for (const exit of exits) {
     const exitZone = map.add([
       k.pos(exit.x, exit.y),
@@ -181,6 +187,16 @@ export function setExitZones(k, map, exits, destinationName) {
       k.body({ isStatic: true }),
       exit.name,
     ]);
+
+    // Add floating text suggesting it's the exit
+    if (exit.name !== "entrance-1" && exit.name !== "entrance-2" && exit.name !== "entrance-3") {
+      map.add([
+        k.pos(exit.x + exit.width / 2, exit.y - 20),
+        k.text("Next Level ->", { size: 12, font: "glyphmesss" }),
+        k.anchor("center"),
+        k.color(200, 200, 200)
+      ]);
+    }
 
     exitZone.onCollide("player", async () => {
       const background = k.add([
@@ -202,7 +218,18 @@ export function setExitZones(k, map, exits, destinationName) {
         return;
       }
 
-      k.go(destinationName, { exitName: exit.name });
+      const destinationName = destinationMap[exit.name] || destinationMap["default"];
+
+      if (destinationName) {
+        // Increment global level state when successfully moving forward naturally
+        // Simple logic: parse it based on destination name
+        let targetLevelNumber = parseInt(destinationName.replace("room", ""));
+        if (!isNaN(targetLevelNumber)) {
+          state.set(statePropsEnum.currentLevel, targetLevelNumber);
+        }
+
+        k.go(destinationName, { exitName: exit.name });
+      }
     });
   }
 }

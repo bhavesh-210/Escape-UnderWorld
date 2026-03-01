@@ -2,6 +2,7 @@ import { makeBoss } from "../entities/enemyBoss.js";
 import { makeDrone } from "../entities/enemyDrone.js";
 import { makeCartridge } from "../entities/healthCartridge.js";
 import { makePlayer } from "../entities/player.js";
+import { makeCollectible } from "../entities/collectible.js";
 import { state } from "../state/globalStateManager.js";
 import { healthBar } from "../ui/healthBar.js";
 
@@ -88,6 +89,12 @@ export async function room1(
     if (position.type === "cartridge") {
       map.add(makeCartridge(k, k.vec2(position.x, position.y)));
     }
+
+    if (position.type === "collectible") {
+      const collectible = map.add(makeCollectible(k, k.vec2(position.x, position.y)));
+      collectible.setBehavior();
+      collectible.setEvents();
+    }
   }
 
   const cameras = roomLayers[6].objects;
@@ -95,7 +102,7 @@ export async function room1(
   setCameraZones(k, map, cameras);
 
   const exits = roomLayers[7].objects;
-  setExitZones(k, map, exits, "room2");
+  setExitZones(k, map, exits, { "default": "room2" });
 
   healthBar.setEvents();
   healthBar.trigger("update");

@@ -100,6 +100,11 @@ export function makeDrone(k, initialPos) {
           this.hurt(1);
         });
 
+        this.onCollide("bullet", (b) => {
+          k.destroy(b);
+          this.hurt(1);
+        });
+
         // event defined by default by the health component
         // when health is removed
         this.on("hurt", () => {
