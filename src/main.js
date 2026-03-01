@@ -54,7 +54,10 @@ main().then(() => {
       const context = new AudioContext();
       context.resume();
 
-      k.play("goliyan", { loop: true, volume: 0.5 });
+      // Wait for engine ticks to resolve audio context, then play
+      k.wait(0.1, () => {
+        k.play("goliyan", { loop: true, volume: 0.5 });
+      });
 
       k.go("room1", { exitName: null });
     });
